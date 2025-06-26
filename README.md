@@ -1,50 +1,55 @@
-Smart Temperature Monitoring System for Home-Alone Patients
-This project is inspired by our university IoT lab course (ITDS282), and was developed to address the critical need for remote health monitoring—especially for patients who live alone and may not be able to seek help in emergencies.
+# 🧠 Smart Temperature Monitoring System for Home-Alone Patients
 
-🔍 Project Overview
-The Smart Temperature Monitoring System continuously measures a patient’s body temperature using the DHT22 sensor connected to an ESP32 microcontroller. If the temperature exceeds 39°C (a high-fever threshold that may signal serious risk such as shock or unconsciousness), the system performs the following actions:
+This project is inspired by our university IoT lab course (**ITDS282**), and was developed to address the critical need for remote health monitoring — especially for patients who live alone and may not be able to seek help in emergencies.
 
-Triggers a visible LED alert
+---
 
-Starts a timer using the RTC module (DS3231)
+## 📘 Project Overview
 
-Sends real-time data (temperature, humidity, and fever duration) to the cloud via MQTT protocol
+The **Smart Temperature Monitoring System** continuously measures a patient’s body temperature using a **DHT22 sensor** connected to an **ESP32 microcontroller**. If the temperature exceeds **39°C**, which is considered a dangerous fever level, the system will:
 
-Displays these values on a Blynk dashboard
+- 🔴 Trigger a **visible LED alert**
+- ⏱️ Start a **timer** using the **RTC module (DS3231)**
+- 📤 Send real-time data (temperature, humidity, and fever duration) to the cloud using **MQTT**
+- 📱 Display data on a **Blynk dashboard**
+- 🛑 Allow users to stop the alert by pressing a **physical button** when help has arrived
 
-Allows users to stop the timer by pressing a physical button when help has arrived
+This ensures patients in isolation can receive timely attention if critical conditions are detected.
 
-This system ensures that even patients in isolation can receive timely attention if critical conditions are detected.
+---
 
-🧠 Features
-Real-time temperature & humidity monitoring
+## ✨ Features
 
-RTC-based fever duration tracking
+- 🌡️ Real-time **temperature & humidity monitoring**
+- ⏲️ RTC-based **fever duration tracking**
+- 🚨 **LED emergency indication**
+- 🌐 Remote monitoring via **Blynk App**
+- 🔗 Integration with **Node-RED** and **MQTT**
+- 🧷 Push button to **manually stop the alert**
 
-LED emergency indication
+---
 
-Remote monitoring via Blynk App
+## 🧰 Technologies Used
 
-Integration with Node-RED and MQTT
+- **ESP32**
+- **DHT22** Temperature & Humidity Sensor
+- **RTC DS3231**
+- **Tactile Button** for manual stop
+- **LED Indicator**
+- **Node-RED** for data flow
+- **MQTT Protocol**
+- **Blynk IoT Platform**
 
-Push button to stop the alert manually
+---
 
-🧰 Technologies Used
-ESP32
+## 🩺 Use Case Scenario
 
-DHT22 temperature & humidity sensor
+> Imagine an elderly patient or someone recovering from a virus like COVID-19 staying home alone.  
+> If their body temperature spikes to 39°C, the system triggers an alert, starts counting how long the fever lasts,  
+> and displays everything live to a remote caregiver’s Blynk dashboard.  
+> A button is also available for the patient to stop the alert once help is received.
 
-DS3231 RTC module
+---
 
-LED & tactile switch
+Would you like me to help write a **setup guide**, **circuit diagram**, or **code usage section** next?
 
-Node-RED
-
-Blynk IoT Platform
-
-MQTT Protocol
-
-Arduino IDE (C++)
-
-🧪 Use Case
-Imagine an elderly or COVID-19 patient staying at home alone. The system automatically detects high fever, begins recording how long it persists, and shows the data live on a dashboard that can be monitored by family or caregivers. This provides peace of mind and faster response in emergencies.
