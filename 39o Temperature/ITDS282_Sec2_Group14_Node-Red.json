@@ -1,0 +1,298 @@
+[
+    {
+        "id": "093da678bba0d2b7",
+        "type": "mqtt in",
+        "z": "8b7022256ef337ca",
+        "name": "Receive from ESP32",
+        "topic": "healthmonitor/data",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 650,
+        "y": 400,
+        "wires": [
+            [
+                "036b32e49f9d3878"
+            ]
+        ]
+    },
+    {
+        "id": "036b32e49f9d3878",
+        "type": "json",
+        "z": "8b7022256ef337ca",
+        "name": "Parse JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 820,
+        "y": 400,
+        "wires": [
+            [
+                "3c671d15e226e296",
+                "514c1893bbcd23f8",
+                "04d8345a4f2d0111",
+                "d996303e4247a21b",
+                "50e02a5b9b8812bb",
+                "e6acd123fd0bfeb7",
+                "6d6ec4b28b084c8e"
+            ]
+        ]
+    },
+    {
+        "id": "3c671d15e226e296",
+        "type": "ui_text",
+        "z": "8b7022256ef337ca",
+        "group": "ui_group",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Temperature",
+        "label": "Temperature",
+        "format": "{{msg.payload.temp}} °C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 1030,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "514c1893bbcd23f8",
+        "type": "ui_text",
+        "z": "8b7022256ef337ca",
+        "group": "ui_group",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Humidity",
+        "label": "Humidity",
+        "format": "{{msg.payload.hum}} %",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 1030,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "04d8345a4f2d0111",
+        "type": "debug",
+        "z": "8b7022256ef337ca",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d996303e4247a21b",
+        "type": "switch",
+        "z": "8b7022256ef337ca",
+        "name": "Temp > 39?",
+        "property": "payload.temp",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "39",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 480,
+        "wires": [
+            [
+                "4e06a900ea0515dd"
+            ]
+        ]
+    },
+    {
+        "id": "4e06a900ea0515dd",
+        "type": "http request",
+        "z": "8b7022256ef337ca",
+        "name": "Send to Blynk",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://blynk.cloud/external/api/logEvent?token=q5Pavrg7r3TZ40opDo9BSlzvxfqk-X-O&event=high_temp_alert",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1240,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "50e02a5b9b8812bb",
+        "type": "function",
+        "z": "8b7022256ef337ca",
+        "name": "function 1",
+        "func": "const token = \"q5Pavrg7r3TZ40opDo9BSlzvxfqk-X-O\";\nconst temp = msg.payload?.temp ?? 0;\n\nmsg.method = \"GET\";\nmsg.payload = null;\nmsg.url = `https://blynk.cloud/external/api/update?token=${token}&V1=${temp}`;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 540,
+        "wires": [
+            [
+                "62c3134ae9087ddb"
+            ]
+        ]
+    },
+    {
+        "id": "62c3134ae9087ddb",
+        "type": "http request",
+        "z": "8b7022256ef337ca",
+        "name": "Send V1-V3",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 540,
+        "wires": [
+            [
+                "ac193d36f780b924"
+            ]
+        ]
+    },
+    {
+        "id": "ac193d36f780b924",
+        "type": "debug",
+        "z": "8b7022256ef337ca",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1430,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "e6acd123fd0bfeb7",
+        "type": "function",
+        "z": "8b7022256ef337ca",
+        "name": "function 2",
+        "func": "const token = \"q5Pavrg7r3TZ40opDo9BSlzvxfqk-X-O\";\nconst hum = msg.payload?.hum ?? 0;\n\nmsg.method = \"GET\";\nmsg.payload = null;\nmsg.url = `https://blynk.cloud/external/api/update?token=${token}&V2=${hum}`;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 600,
+        "wires": [
+            [
+                "62c3134ae9087ddb"
+            ]
+        ]
+    },
+    {
+        "id": "6d6ec4b28b084c8e",
+        "type": "function",
+        "z": "8b7022256ef337ca",
+        "name": "function 3",
+        "func": "const token = \"q5Pavrg7r3TZ40opDo9BSlzvxfqk-X-O\";\nconst duration = msg.payload?.duration ?? 0;\n\nmsg.method = \"GET\";\nmsg.payload = null;\nmsg.url = `https://blynk.cloud/external/api/update?token=${token}&V3=${duration}`;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 660,
+        "wires": [
+            [
+                "62c3134ae9087ddb"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "Local MQTT",
+        "broker": "172.20.10.4",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group",
+        "type": "ui_group",
+        "name": "Patient Monitor",
+        "tab": "ui_tab",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_tab",
+        "type": "ui_tab",
+        "name": "Health",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
